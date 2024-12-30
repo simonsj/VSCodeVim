@@ -31,7 +31,11 @@ export async function getAndUpdateModeHandler(
   forceSyncAndUpdate = false,
 ): Promise<ModeHandler | undefined> {
   const activeTextEditor = vscode.window.activeTextEditor;
-  if (activeTextEditor === undefined || activeTextEditor.document.isClosed) {
+  if (
+    activeTextEditor === undefined ||
+    activeTextEditor.document.isClosed ||
+    activeTextEditor.document.uri.scheme === 'output'
+  ) {
     return undefined;
   }
 
