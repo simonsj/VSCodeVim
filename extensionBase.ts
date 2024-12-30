@@ -266,7 +266,7 @@ export async function activate(context: vscode.ExtensionContext, handleLocal: bo
     vscode.window.onDidChangeTextEditorSelection,
     async (e: vscode.TextEditorSelectionChangeEvent) => {
       if (e.textEditor.document.uri.scheme === 'output') {
-        // Without this, we can an infinite logging loop
+        // Without this, we can get an infinite logging loop
         return;
       }
       if (
@@ -335,6 +335,9 @@ export async function activate(context: vscode.ExtensionContext, handleLocal: bo
     context,
     vscode.window.onDidChangeTextEditorVisibleRanges,
     async (e: vscode.TextEditorVisibleRangesChangeEvent) => {
+      if (e.textEditor.document.uri.scheme === 'output') {
+        return;
+      }
       if (e.textEditor !== vscode.window.activeTextEditor) {
         return;
       }
