@@ -247,7 +247,7 @@ export async function activate(context: vscode.ExtensionContext, handleLocal: bo
         return;
       }
 
-      taskQueue.enqueueTask(async () => {
+      taskQueue.enqueueTask('onDidChangeActiveTextEditor', async () => {
         const mh = await getAndUpdateModeHandler(true);
         if (mh) {
           globalState.jumpTracker.handleFileJump(
@@ -325,7 +325,7 @@ export async function activate(context: vscode.ExtensionContext, handleLocal: bo
         return;
       }
 
-      taskQueue.enqueueTask(() => mh.handleSelectionChange(e));
+      taskQueue.enqueueTask('onDidChangeTextEditorSelection', () => mh.handleSelectionChange(e));
     },
     true,
     false,
@@ -338,7 +338,7 @@ export async function activate(context: vscode.ExtensionContext, handleLocal: bo
       if (e.textEditor !== vscode.window.activeTextEditor) {
         return;
       }
-      taskQueue.enqueueTask(async () => {
+      taskQueue.enqueueTask('onDidChangeTextEditorVisibleRanges', async () => {
         // Scrolling the viewport clears any status bar message, even errors.
         const mh = await getAndUpdateModeHandler();
         if (mh && StatusBar.lastMessageTime) {
@@ -356,7 +356,7 @@ export async function activate(context: vscode.ExtensionContext, handleLocal: bo
 
   // Override VSCode commands
   overrideCommand(context, 'type', async (args: { text: string }) => {
-    taskQueue.enqueueTask(async () => {
+    taskQueue.enqueueTask('type', async () => {
       const mh = await getAndUpdateModeHandler();
       if (mh) {
         if (compositionState.isInComposition) {
@@ -376,7 +376,7 @@ export async function activate(context: vscode.ExtensionContext, handleLocal: bo
     context,
     'replacePreviousChar',
     async (args: { replaceCharCnt: number; text: string }) => {
-      taskQueue.enqueueTask(async () => {
+      taskQueue.enqueueTask('replacePreviousChar', async () => {
         const mh = await getAndUpdateModeHandler();
         if (mh) {
           if (compositionState.isInComposition) {
@@ -405,13 +405,13 @@ export async function activate(context: vscode.ExtensionContext, handleLocal: bo
   );
 
   overrideCommand(context, 'compositionStart', async () => {
-    taskQueue.enqueueTask(async () => {
+    taskQueue.enqueueTask('compositionStart', async () => {
       compositionState.isInComposition = true;
     });
   });
 
   overrideCommand(context, 'compositionEnd', async () => {
-    taskQueue.enqueueTask(async () => {
+    taskQueue.enqueueTask('compositionEnd', async () => {
       const mh = await getAndUpdateModeHandler();
       if (mh) {
         if (compositionState.insertedText) {
@@ -449,7 +449,7 @@ export async function activate(context: vscode.ExtensionContext, handleLocal: bo
   });
 
   registerCommand(context, 'vim.remap', async (args: ICodeKeybinding) => {
-    taskQueue.enqueueTask(async () => {
+    taskQueue.enqueueTask('vim.remap', async () => {
       const mh = await getAndUpdateModeHandler();
       if (mh === undefined) {
         return;
@@ -504,7 +504,7 @@ export async function activate(context: vscode.ExtensionContext, handleLocal: bo
           }
         };
     registerCommand(context, boundKey.command, async () => {
-      taskQueue.enqueueTask(command);
+      taskQueue.enqueueTask({ key: boundKey.key, command: boundKey.command }, command);
     });
   }
 
