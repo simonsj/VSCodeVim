@@ -496,6 +496,19 @@ export async function activate(context: vscode.ExtensionContext, handleLocal: bo
     void toggleExtension(configuration.disableExtension, compositionState);
   });
 
+  registerCommand(context, 'vim.cmd', async (args: { text: string }) => {
+    if (!args || !args.text) {
+      throw new Error("'args.text' is required for the 'vim.cmd' command.");
+    }
+    taskQueue.enqueueTask('vim.cmd', async () => {
+      const mh = await getAndUpdateModeHandler();
+      if (mh) {
+        await new ExCommandLine(args.text, mh.vimState.currentMode).run(mh.vimState);
+        void mh.updateView();
+      }
+    });
+  });
+
   for (const boundKey of configuration.boundKeyCombinations) {
     const command = ['<Esc>', '<C-c>'].includes(boundKey.key)
       ? async () => {
