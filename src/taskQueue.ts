@@ -9,6 +9,7 @@ type TaskName =
   | 'onDidChangeTextEditorVisibleRanges'
   | 'replacePreviousChar'
   | 'type'
+  | 'vim.cmd'
   | 'vim.remap'
   | { key: string; command: string };
 
