@@ -1,5 +1,3 @@
-import * as _ from 'lodash';
-import { escapeRegExp } from 'lodash';
 import { Position, Selection } from 'vscode';
 import { SearchCommandLine } from '../../cmd_line/commandLine';
 import { sorted } from '../../common/motion/position';
@@ -17,6 +15,10 @@ import { reportSearch } from '../../util/statusBarTextUtils';
 import { SearchDirection } from '../../vimscript/pattern';
 import { BaseCommand, RegisterAction } from '../base';
 import { IMovement, failedMovement } from '../baseMotion';
+
+function escapeRegExp(str: string): string {
+  return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
 
 /**
  * Search for the word under the cursor; used by [g]* and [g]#
@@ -37,7 +39,7 @@ async function searchCurrentWord(
     }
 
     if (isExact) {
-      currentWord = _.escapeRegExp(currentWord);
+      currentWord = escapeRegExp(currentWord);
     }
     // If the search is going left then use `getWordLeft()` on position to start
     // at the beginning of the word. This ensures that any matches happen
