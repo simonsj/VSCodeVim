@@ -3,7 +3,7 @@
   "displayName": "Vim",
   "description": "Vim emulation for Visual Studio Code (simonsj fork)",
   "icon": "images/icon.png",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "publisher": "simonsj",
   "galleryBanner": {
     "color": "#e3f4ff",
@@ -1194,7 +1194,6 @@
   },
   "dependencies": {
     "diff-match-patch": "1.0.5",
-    "lodash": "^4.17.21",
     "neovim": "5.3.0",
     "os-browserify": "0.3.0",
     "parsimmon": "^1.18.0",
@@ -1208,7 +1207,6 @@
     "@types/diff": "5.2.3",
     "@types/diff-match-patch": "1.0.36",
     "@types/glob": "8.1.0",
-    "@types/lodash": "4.17.14",
     "@types/mocha": "10.0.10",
     "@types/node": "22.10.5",
     "@types/parsimmon": "1.10.9",
