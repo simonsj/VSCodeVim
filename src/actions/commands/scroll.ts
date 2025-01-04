@@ -1,11 +1,14 @@
 import * as vscode from 'vscode';
-import { clamp } from 'lodash';
 import { Position } from 'vscode';
 import { configuration } from '../../configuration/configuration';
 import { Mode, isVisualMode } from '../../mode/mode';
 import { VimState } from '../../state/vimState';
 import { EditorScrollDirection, EditorScrollByUnit, TextEditor } from '../../textEditor';
 import { BaseCommand, RegisterAction } from '../base';
+
+function clamp(value: number, min: number, max: number): number {
+  return Math.min(Math.max(value, min), max);
+}
 
 abstract class CommandEditorScroll extends BaseCommand {
   modes = [Mode.Normal, Mode.Visual, Mode.VisualLine, Mode.VisualBlock];
