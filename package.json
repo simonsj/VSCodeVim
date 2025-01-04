@@ -1,10 +1,10 @@
 {
   "name": "vim",
   "displayName": "Vim",
-  "description": "Vim emulation for Visual Studio Code",
+  "description": "Vim emulation for Visual Studio Code (simonsj fork)",
   "icon": "images/icon.png",
-  "version": "1.29.0",
-  "publisher": "vscodevim",
+  "version": "0.0.0",
+  "publisher": "simonsj",
   "galleryBanner": {
     "color": "#e3f4ff",
     "theme": "light"
@@ -17,11 +17,11 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/VSCodeVim/Vim.git"
+    "url": "https://github.com/simonsj/VSCodeVim.git"
   },
-  "homepage": "https://github.com/VSCodeVim/Vim",
+  "homepage": "https://github.com/simonsj/VSCodeVim",
   "bugs": {
-    "url": "https://github.com/VSCodeVim/Vim/issues"
+    "url": "https://github.com/simonsj/VSCodeVim/issues"
   },
   "engines": {
     "vscode": "^1.74.0"
@@ -38,7 +38,7 @@
     "onStartupFinished",
     "onCommand:type"
   ],
-  "qna": "https://vscodevim.herokuapp.com/",
+  "qna": false,
   "main": "./out/extension",
   "browser": "./out/extensionWeb",
   "capabilities": {
