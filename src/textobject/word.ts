@@ -1,7 +1,10 @@
-import * as _ from 'lodash';
 import { Position, TextDocument } from 'vscode';
 import { configuration } from '../configuration/configuration';
 import { getAllEndPositions, getAllPositions } from './util';
+
+function escapeRegExp(str: string): string {
+  return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
 
 export enum WordType {
   Normal,
@@ -168,14 +171,14 @@ export function prevWordEnd(document: TextDocument, pos: Position, wordType: Wor
 }
 
 function makeWordRegex(characterSet: string): RegExp {
-  const escaped = characterSet && _.escapeRegExp(characterSet).replace(/-/g, '\\-');
+  const escaped = characterSet && escapeRegExp(characterSet).replace(/-/g, '\\-');
   const segments = [`([^\\s${escaped}]+)`, `[${escaped}]+`, `$^`];
 
   return new RegExp(segments.join('|'), 'g');
 }
 
 function makeCamelCaseWordRegex(characterSet: string): RegExp {
-  const escaped = characterSet && _.escapeRegExp(characterSet).replace(/-/g, '\\-');
+  const escaped = characterSet && escapeRegExp(characterSet).replace(/-/g, '\\-');
   const segments: string[] = [];
 
   // Older browsers don't support lookbehind - in this case, use an inferior regex rather than crashing
@@ -314,7 +317,7 @@ function makeUnicodeWordRegex(keywordChars: string): RegExp {
 
   // Symbols in vim.iskeyword or editor.wordSeparators
   // are treated as CharKind.Punctuation
-  const escapedKeywordChars = _.escapeRegExp(keywordChars).replace(/-/g, '\\-');
+  const escapedKeywordChars = escapeRegExp(keywordChars).replace(/-/g, '\\-');
   codePointRangePatterns[Number(CharKind.Punctuation)].push(escapedKeywordChars);
 
   const codePointRanges = codePointRangePatterns.map((patterns) => patterns.join(''));
