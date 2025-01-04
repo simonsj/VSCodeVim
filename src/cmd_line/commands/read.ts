@@ -40,10 +40,6 @@ export class ReadCommand extends ExCommand {
     this.arguments = args;
   }
 
-  public override neovimCapable(): boolean {
-    return true;
-  }
-
   async execute(vimState: VimState): Promise<void> {
     const textToInsert = await this.getTextToInsert(vimState);
     if (textToInsert) {

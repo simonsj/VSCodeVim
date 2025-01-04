@@ -40,9 +40,6 @@ export async function getAndUpdateModeHandler(
   }
 
   const [curHandler, isNew] = await ModeHandlerMap.getOrCreate(activeTextEditor);
-  if (isNew) {
-    extensionContext.subscriptions.push(curHandler);
-  }
 
   curHandler.vimState.editor = activeTextEditor;
 

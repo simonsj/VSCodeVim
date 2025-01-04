@@ -70,7 +70,7 @@ interface IModeHandlerMap {
  *
  * See:  https://github.com/VSCodeVim/Vim/blob/master/.github/CONTRIBUTING.md#the-vim-state-machine
  */
-export class ModeHandler implements vscode.Disposable, IModeHandler {
+export class ModeHandler implements IModeHandler {
   public readonly vimState: VimState;
   public readonly remapState: RemapState;
 
@@ -80,7 +80,6 @@ export class ModeHandler implements vscode.Disposable, IModeHandler {
 
   private searchDecorationCacheKey: { searchString: string; documentVersion: number } | undefined;
 
-  private readonly disposables: vscode.Disposable[] = [];
   private readonly handlerMap: IModeHandlerMap;
   private readonly remappers: Remappers;
 
@@ -119,7 +118,6 @@ export class ModeHandler implements vscode.Disposable, IModeHandler {
 
     this.vimState = new VimState(textEditor, new EasyMotion());
     this.remapState = new RemapState();
-    this.disposables.push(this.vimState);
   }
 
   /**
@@ -1696,12 +1694,6 @@ export class ModeHandler implements vscode.Disposable, IModeHandler {
     );
     if (!/\s+/.test(this.vimState.document.getText(range))) {
       void vscode.commands.executeCommand('editor.action.wordHighlight.trigger');
-    }
-  }
-
-  dispose() {
-    for (const d of this.disposables) {
-      d.dispose();
     }
   }
 }

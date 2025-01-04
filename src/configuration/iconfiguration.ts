@@ -344,14 +344,6 @@ export interface IConfiguration {
   disableExtension: boolean;
 
   /**
-   * Neovim
-   */
-  enableNeovim: boolean;
-  neovimPath: string;
-  neovimUseConfigFile: boolean;
-  neovimConfigPath: string;
-
-  /**
    * .vimrc
    */
   vimrc: {

@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
 
-import { SUPPORT_IME_SWITCHER, SUPPORT_NVIM } from 'platform/constants';
+import { SUPPORT_IME_SWITCHER } from 'platform/constants';
 import { Position } from 'vscode';
 import { IMovement } from '../actions/baseMotion';
 import { IEasyMotion } from '../actions/plugins/easymotion/types';
@@ -30,12 +30,6 @@ interface IBaseMovement {
   ): Promise<Position | IMovement>;
 }
 
-interface INVim {
-  run(vimState: VimState, command: string): Promise<{ statusBarText: string; error: boolean }>;
-
-  dispose(): void;
-}
-
 /**
  * The VimState class holds permanent state that carries over from action
  * to action.
@@ -45,7 +39,7 @@ interface INVim {
  *
  * Each ModeHandler holds a VimState, so there is one for each open editor.
  */
-export class VimState implements vscode.Disposable {
+export class VimState {
   /**
    * The column the cursor wants to be at, or Number.POSITIVE_INFINITY if it should always
    * be the rightmost column.
@@ -305,8 +299,6 @@ export class VimState implements vscode.Disposable {
   /** The macro currently being recorded, if one exists. */
   public macro: RecordedState | undefined;
 
-  public nvim?: INVim;
-
   public constructor(editor: vscode.TextEditor, easyMotion: IEasyMotion) {
     this.editor = editor;
     this.documentUri = editor?.document.uri ?? vscode.Uri.file(''); // TODO: this is needed for some badly written tests
@@ -315,19 +307,10 @@ export class VimState implements vscode.Disposable {
   }
 
   async load() {
-    if (SUPPORT_NVIM) {
-      const m = await import('../neovim/neovim');
-      this.nvim = new m.NeovimWrapper();
-    }
-
     if (SUPPORT_IME_SWITCHER) {
       const ime = await import('../actions/plugins/imswitcher');
       this.inputMethodSwitcher = new ime.InputMethodSwitcher();
     }
-  }
-
-  dispose() {
-    this.nvim?.dispose();
   }
 }
 

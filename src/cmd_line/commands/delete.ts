@@ -42,10 +42,6 @@ export class DeleteCommand extends ExCommand {
     this.arguments = args;
   }
 
-  public override neovimCapable(): boolean {
-    return true;
-  }
-
   /**
    * Deletes text between `startLine` and `endLine`, inclusive.
    * Puts the cursor at the start of the line where the deleted range was.

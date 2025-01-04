@@ -24,10 +24,6 @@ export class EchoCommand extends ExCommand {
     this.expressions = expressions;
   }
 
-  public override neovimCapable(): boolean {
-    return true;
-  }
-
   public async execute(vimState: VimState): Promise<void> {
     const ctx = new EvaluationContext();
     const values = this.expressions.map((x) => ctx.evaluate(x));

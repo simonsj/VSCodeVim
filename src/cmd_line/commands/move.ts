@@ -18,10 +18,6 @@ export class MoveCommand extends ExCommand {
     this.address = address;
   }
 
-  public override neovimCapable(): boolean {
-    return true;
-  }
-
   private moveLines(vimState: VimState, sourceStart: number, sourceEnd: number) {
     const dest = this.address?.resolve(vimState, 'left', false);
     if (dest === undefined || dest < -1 || dest > vimState.document.lineCount) {

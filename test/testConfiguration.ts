@@ -102,12 +102,8 @@ export class Configuration implements IConfiguration {
   changeWordIncludesWhitespace = false;
   foldfix = false;
   disableExtension = false;
-  enableNeovim = false;
   gdefault = false;
   substituteGlobalFlag = false; // Deprecated in favor of gdefault
-  neovimPath = 'nvim';
-  neovimUseConfigFile = false;
-  neovimConfigPath = '';
   vimrc = {
     enable: false,
     path: '',
