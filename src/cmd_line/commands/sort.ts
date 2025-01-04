@@ -38,10 +38,6 @@ export class SortCommand extends ExCommand {
     this.arguments = args;
   }
 
-  public override neovimCapable(): boolean {
-    return true;
-  }
-
   async execute(vimState: VimState): Promise<void> {
     if (isVisualMode(vimState.currentMode)) {
       const { start, end } = vimState.editor.selection;

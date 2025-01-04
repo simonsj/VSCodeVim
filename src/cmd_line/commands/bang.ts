@@ -23,10 +23,6 @@ export class BangCommand extends ExCommand {
     this._arguments = args;
   }
 
-  public override neovimCapable(): boolean {
-    return true;
-  }
-
   private getReplaceDiff(text: string): PositionDiff {
     const lines = text.split('\n');
     const numNewlines = lines.length - 1;

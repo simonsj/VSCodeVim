@@ -274,29 +274,14 @@ export class ExCommandLine extends CommandLine {
         throw new Error(`Expected parsing ExCommand '${this.text}' to fail`);
       }
 
-      const useNeovim = configuration.enableNeovim && this.command.neovimCapable();
-      if (useNeovim && vimState.nvim) {
-        const { statusBarText, error } = await vimState.nvim.run(vimState, this.text);
-        StatusBar.setText(vimState, statusBarText, error);
+      if (this.lineRange) {
+        await this.command.executeWithRange(vimState, this.lineRange);
       } else {
-        if (this.lineRange) {
-          await this.command.executeWithRange(vimState, this.lineRange);
-        } else {
-          await this.command.execute(vimState);
-        }
+        await this.command.execute(vimState);
       }
     } catch (e) {
       if (e instanceof VimError) {
-        if (
-          e.code === ErrorCode.NotAnEditorCommand &&
-          configuration.enableNeovim &&
-          vimState.nvim
-        ) {
-          const { statusBarText } = await vimState.nvim.run(vimState, this.text);
-          StatusBar.setText(vimState, statusBarText, true);
-        } else {
-          StatusBar.setText(vimState, e.toString(), true);
-        }
+        StatusBar.setText(vimState, e.toString(), true);
       } else {
         Logger.error(`Error executing cmd=${this.text}. err=${e}.`);
       }

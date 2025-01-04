@@ -32,7 +32,6 @@ class ModeHandlerMapImpl {
   public delete(editorId: Uri) {
     const modeHandler = this.modeHandlerMap.get(editorId);
     if (modeHandler) {
-      modeHandler.dispose();
       this.modeHandlerMap.delete(editorId);
     }
   }

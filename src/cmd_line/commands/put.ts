@@ -50,10 +50,6 @@ export class PutExCommand extends ExCommand {
     this.arguments = args;
   }
 
-  public override neovimCapable(): boolean {
-    return true;
-  }
-
   async doPut(vimState: VimState, position: Position): Promise<void> {
     if (this.arguments.register === '=' && this.arguments.fromExpression === undefined) {
       if (PutExCommand.lastExpression === undefined) {

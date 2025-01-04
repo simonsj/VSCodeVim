@@ -307,11 +307,6 @@ export class SubstituteCommand extends ExCommand {
     this.abort = false;
   }
 
-  public override neovimCapable(): boolean {
-    // We need to use VSCode's quickpick capabilities to do confirmation
-    return !this.arguments.flags.confirmEach;
-  }
-
   public getSubstitutionDecorations(
     vimState: VimState,
     lineRange = new LineRange(new Address({ type: 'current_line' })),

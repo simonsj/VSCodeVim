@@ -421,11 +421,6 @@ class Configuration implements IConfiguration {
 
   disableExtension: boolean = false;
 
-  enableNeovim = false;
-  neovimPath = '';
-  neovimUseConfigFile = false;
-  neovimConfigPath = '';
-
   vimrc = {
     enable: false,
     path: '',

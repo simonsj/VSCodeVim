@@ -12,7 +12,6 @@ import './src/actions/include-plugins';
 
 import './src/configuration/validators/inputMethodSwitcherValidator';
 import './src/configuration/validators/remappingValidator';
-import './src/configuration/validators/neovimValidator';
 import './src/configuration/validators/vimrcValidator';
 
 import * as vscode from 'vscode';

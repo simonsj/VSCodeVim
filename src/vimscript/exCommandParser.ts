@@ -620,11 +620,6 @@ export const builtinExCommands: ReadonlyArray<[[string, string], ArgParser | und
 class UnimplementedCommand extends ExCommand {
   name: string;
 
-  public override neovimCapable(): boolean {
-    // If the user has neovim integration enabled, don't stop them from using these commands
-    return true;
-  }
-
   constructor(name: string) {
     super();
     this.name = name;

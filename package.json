@@ -3,7 +3,7 @@
   "displayName": "Vim",
   "description": "Vim emulation for Visual Studio Code (simonsj fork)",
   "icon": "images/icon.png",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "publisher": "simonsj",
   "galleryBanner": {
     "color": "#e3f4ff",
@@ -974,28 +974,6 @@
           "description": "Disables the VSCodeVim extension. The extension will continue to be loaded and activated, but Vim functionality will be disabled.",
           "default": false
         },
-        "vim.enableNeovim": {
-          "type": "boolean",
-          "markdownDescription": "Use Neovim to execute Ex commands. You should restart VS Code after enabling/disabling this for the changes to take effect. **NOTE:** Neovim version 0.2.0 or greater must be installed, and if the executable is not on your PATH, `#vim.neovimPath#` must be set.",
-          "default": false
-        },
-        "vim.neovimPath": {
-          "type": "string",
-          "markdownDescription": "Path to Neovim executable. For example, `/usr/bin/nvim`, or  `C:\\Program Files\\Neovim\\bin\\nvim.exe`.",
-          "default": "",
-          "scope": "machine"
-        },
-        "vim.neovimUseConfigFile": {
-          "type": "boolean",
-          "markdownDescription": "Use a config file for Neovim, specified by `#vim.neovimConfigPath#`.",
-          "default": false
-        },
-        "vim.neovimConfigPath": {
-          "type": "string",
-          "markdownDescription": "Path to Neovim configuration file. `#vim.neovimUseConfigFile#` must be enabled. If path is left blank, Neovim will use its default config path, i.e. `~/.config/nvim/init.vim` or 'C:\\Users\\USERNAME\\AppData\\Local\\nvim\\init.vim'.",
-          "default": "",
-          "scope": "machine"
-        },
         "vim.vimrc.enable": {
           "type": "boolean",
           "markdownDescription": "Use key mappings from a `.vimrc` file.",
@@ -1003,7 +981,7 @@
         },
         "vim.vimrc.path": {
           "type": "string",
-          "markdownDescription": "Path to a Vim configuration file. If unset, it will check for `$HOME/.vscodevimrc`, `$HOME/.vimrc`, `$HOME/_vimrc`, and `$HOME/.config/nvim/init.vim`, in that order."
+          "markdownDescription": "Path to a Vim configuration file. If unset, it will check for `$HOME/.vscodevimrc`, `$HOME/.vimrc`, and `$HOME/_vimrc`, in that order."
         },
         "vim.substituteGlobalFlag": {
           "type": "boolean",
@@ -1194,7 +1172,6 @@
   },
   "dependencies": {
     "diff-match-patch": "1.0.5",
-    "neovim": "5.3.0",
     "os-browserify": "0.3.0",
     "parsimmon": "^1.18.0",
     "path-browserify": "1.0.1",

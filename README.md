@@ -22,7 +22,6 @@ VSCodeVim is a Vim emulator for [Visual Studio Code](https://code.visualstudio.c
 - [⚙️ Settings](#️-settings)
   - [Quick Example](#quick-example)
   - [VSCodeVim settings](#vscodevim-settings)
-  - [Neovim Integration](#neovim-integration)
   - [Key Remapping](#key-remapping)
     - [`"vim.insertModeKeyBindings"`/`"vim.normalModeKeyBindings"`/`"vim.visualModeKeyBindings"`/`"vim.operatorPendingModeKeyBindings"`](#viminsertmodekeybindingsvimnormalmodekeybindingsvimvisualmodekeybindingsvimoperatorpendingmodekeybindings)
     - [`"vim.insertModeKeyBindingsNonRecursive"`/`"normalModeKeyBindingsNonRecursive"`/`"visualModeKeyBindingsNonRecursive"`/`"operatorPendingModeKeyBindingsNonRecursive"`](#viminsertmodekeybindingsnonrecursivenormalmodekeybindingsnonrecursivevisualmodekeybindingsnonrecursiveoperatorpendingmodekeybindingsnonrecursive)
@@ -147,28 +146,6 @@ These settings are specific to VSCodeVim.
 | vim.highlightedyank.enable       | Enable highlighting when yanking                                                                                                                                                                                                                                                                                                                                                                                                   | Boolean | false                                                         |
 | vim.highlightedyank.color        | Set the color of yank highlights                                                                                                                                                                                                                                                                                                                                                                                                   | String  | rgba(250, 240, 170, 0.5)                                      |
 | vim.highlightedyank.duration     | Set the duration of yank highlights                                                                                                                                                                                                                                                                                                                                                                                                | Number  | 200                                                           |
-
-### Neovim Integration
-
-> :warning: Experimental feature. Please leave feedback on neovim integration [here](https://github.com/VSCodeVim/Vim/issues/1735).
-
-To leverage neovim for Ex-commands,
-
-1.  Install [neovim](https://github.com/neovim/neovim/wiki/Installing-Neovim)
-2.  Modify the following configurations:
-
-| Setting                 | Description                                                                                                                                            | Type    | Default Value |
-| ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ | ------- | ------------- |
-| vim.enableNeovim        | Enable Neovim                                                                                                                                          | Boolean | false         |
-| vim.neovimPath          | Full path to neovim executable. If left empty, PATH environment variable will be automatically checked for neovim path.                                | String  |               |
-| vim.neovimUseConfigFile | If `true`, Neovim will load a config file specified by `vim.neovimConfigPath`. This is necessary if you want Neovim to be able to use its own plugins. | Boolean | false         |
-| vim.neovimConfigPath    | Path that Neovim will load as config file. If left blank, Neovim will search in its default location.                                                  | String  |               |
-
-Here's some ideas on what you can do with neovim integration:
-
-- [The power of g](http://vim.wikia.com/wiki/Power_of_g)
-- [The :normal command](https://vi.stackexchange.com/questions/4418/execute-normal-command-over-range)
-- Faster search and replace!
 
 ### Key Remapping
 

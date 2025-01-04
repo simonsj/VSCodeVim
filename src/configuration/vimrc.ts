@@ -467,11 +467,6 @@ export class VimrcImpl {
       return vimrcPath;
     }
 
-    vimrcPath = path.join(os.homedir(), '.config/', 'nvim/', 'init.vim');
-    if (await fs.existsAsync(vimrcPath)) {
-      return vimrcPath;
-    }
-
     return undefined;
   }
 
