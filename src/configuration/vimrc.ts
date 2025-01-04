@@ -1,4 +1,3 @@
-import * as _ from 'lodash';
 import * as os from 'os';
 import * as path from 'path';
 import * as fs from 'platform/fs';
@@ -7,6 +6,24 @@ import { window } from 'vscode';
 import { Logger } from '../util/logger';
 import { IConfiguration, IVimrcKeyRemapping } from './iconfiguration';
 import { vimrcKeyRemappingBuilder } from './vimrcKeyRemappingBuilder';
+
+function sameStringArray(a: string[], b: string[]): boolean {
+  return a.length === b.length && a.every((val, i) => val === b[i]);
+}
+
+function filterInPlace<T>(
+  array: T[],
+  predicate: (value: T, index: number, array: T[]) => boolean,
+): void {
+  let i = 0;
+  while (i < array.length) {
+    if (!predicate(array[i], i, array)) {
+      array.splice(i, 1);
+    } else {
+      i++;
+    }
+  }
+}
 
 export class VimrcImpl {
   private _vimrcPath?: string;
@@ -234,7 +251,7 @@ export class VimrcImpl {
 
     mappings?.forEach((remaps) => {
       // Don't override a mapping present in settings.json; those are more specific to VSCodeVim.
-      if (!remaps.some((r) => _.isEqual(r.before, remap.keyRemapping.before))) {
+      if (!remaps.some((r) => sameStringArray(r.before, remap.keyRemapping.before))) {
         remaps.push(remap.keyRemapping);
       }
     });
@@ -317,9 +334,9 @@ export class VimrcImpl {
     if (mappings) {
       mappings.forEach((remaps) => {
         // Don't remove a mapping present in settings.json; those are more specific to VSCodeVim.
-        _.remove(
+        filterInPlace(
           remaps,
-          (r) => r.source === 'vimrc' && _.isEqual(r.before, remap.keyRemapping.before),
+          (r) => !(r.source === 'vimrc' && sameStringArray(r.before, remap.keyRemapping.before)),
         );
       });
       return true;
@@ -409,7 +426,7 @@ export class VimrcImpl {
     if (mappings) {
       mappings.forEach((remaps) => {
         // Don't remove a mapping present in settings.json; those are more specific to VSCodeVim.
-        _.remove(remaps, (r) => r.source === 'vimrc');
+        filterInPlace(remaps, (r) => r.source !== 'vimrc');
       });
       return true;
     }
@@ -430,7 +447,7 @@ export class VimrcImpl {
       config.commandLineModeKeyBindingsNonRecursive,
     ];
     for (const remaps of remapCollections) {
-      _.remove(remaps, (remap) => remap.source === 'vimrc');
+      filterInPlace(remaps, (remap) => remap.source !== 'vimrc');
     }
   }
 
