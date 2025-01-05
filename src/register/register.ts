@@ -339,8 +339,8 @@ export class Register {
     if (supportNode) {
       Register.registers = new Map();
       void import('path').then((path) => {
-        void readFileAsync(path.join(Globals.extensionStoragePath, '.registers'), 'utf8').then(
-          (savedRegisters) => {
+        void readFileAsync(path.join(Globals.extensionStoragePath, '.registers'), 'utf8')
+          .then((savedRegisters) => {
             // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
             const parsed = JSON.parse(savedRegisters);
             // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
@@ -348,8 +348,13 @@ export class Register {
               // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-member-access
               Register.registers = new Map(parsed.registers);
             }
-          },
-        );
+          })
+          .catch((err: unknown) => {
+            // ignore ENOENT
+            if (typeof err === 'object' && err !== null && 'code' in err && err.code !== 'ENOENT') {
+              console.error('Unexpected error loading .registers:', err);
+            }
+          });
       });
     } else {
       Register.registers = new Map();
