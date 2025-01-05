@@ -456,6 +456,7 @@ export class ModeHandler implements IModeHandler {
     Logger.debug(`Handling key: ${printableKey}`);
 
     if (
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-enum-comparison
       (key === SpecialKeys.TimeoutFinished ||
         this.vimState.recordedState.bufferedKeys.length > 0) &&
       this.vimState.recordedState.bufferedKeysTimeoutObj
@@ -537,6 +538,7 @@ export class ModeHandler implements IModeHandler {
       this.vimState.recordedState.allowPotentialRemapOnFirstKey = true;
 
       if (!handledAsRemap) {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-enum-comparison
         if (key === SpecialKeys.TimeoutFinished) {
           // Remove the <TimeoutFinished> key and get the key before that. If the <TimeoutFinished>
           // key was the last key, then 'key' will be undefined and won't be sent to handle action.
