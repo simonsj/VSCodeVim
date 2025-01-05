@@ -390,7 +390,7 @@ async function testItWithRemaps(testObj: ITestWithRemapsObject): Promise<ModeHan
     };
 
     const p1 = () => {
-      return new Promise<ResultType>((p1Resolve, p1Reject) => {
+      return new Promise<ResultType>((p1Resolve) => {
         setTimeout(() => {
           // Get lines, position and mode after half timeout finishes
           p1Resolve({
@@ -403,31 +403,33 @@ async function testItWithRemaps(testObj: ITestWithRemapsObject): Promise<ModeHan
     };
 
     const p2 = () => {
-      return new Promise<ResultType | undefined>((p2Resolve, p2Reject) => {
+      return new Promise<ResultType | undefined>((p2Resolve) => {
         if (waitsForTimeout) {
-          setTimeout(async () => {
-            if (modeHandler.remapState.isCurrentlyPerformingRemapping) {
-              // Performing a remapping, which means it started at the right time but it has not
-              // finished yet (maybe the remapping has a lot of keys to handle) so we wait for the
-              // remapping to finish
-              const wait = (ms: number) => new Promise((res) => setTimeout(res, ms));
-              while (modeHandler.remapState.isCurrentlyPerformingRemapping) {
-                // Wait a little bit longer here because the currently performing remap might have
-                // some remaining keys to handle after it finishes performing the remap and there
-                // might even be there some keys still to be sent that might create another remap.
-                // Example: if you have and ambiguous remap like 'ab -> abcd' and 'abc -> abcdef'
-                // and an insert remap like 'jj -> <Esc>' and you press 'abjj' the first 'j' breaks
-                // the ambiguity and makes the remap start performing, but when the remap finishes
-                // performing there is still the 'jj' to be handled and remapped.
-                await wait(10);
+          setTimeout(() => {
+            void (async () => {
+              if (modeHandler.remapState.isCurrentlyPerformingRemapping) {
+                // Performing a remapping, which means it started at the right time but it has not
+                // finished yet (maybe the remapping has a lot of keys to handle) so we wait for the
+                // remapping to finish
+                const wait = (ms: number) => new Promise((res) => setTimeout(res, ms));
+                while (modeHandler.remapState.isCurrentlyPerformingRemapping) {
+                  // Wait a little bit longer here because the currently performing remap might have
+                  // some remaining keys to handle after it finishes performing the remap and there
+                  // might even be there some keys still to be sent that might create another remap.
+                  // Example: if you have and ambiguous remap like 'ab -> abcd' and 'abc -> abcdef'
+                  // and an insert remap like 'jj -> <Esc>' and you press 'abjj' the first 'j' breaks
+                  // the ambiguity and makes the remap start performing, but when the remap finishes
+                  // performing there is still the 'jj' to be handled and remapped.
+                  await wait(10);
+                }
               }
-            }
-            // Get lines, position and mode after timeout + offset finishes
-            p2Resolve({
-              lines: modeHandler.vimState.document.getText(),
-              position: modeHandler.vimState.editor.selection.start,
-              endMode: modeHandler.vimState.currentMode,
-            });
+              // Get lines, position and mode after timeout + offset finishes
+              p2Resolve({
+                lines: modeHandler.vimState.document.getText(),
+                position: modeHandler.vimState.editor.selection.start,
+                endMode: modeHandler.vimState.currentMode,
+              });
+            })();
           }, timeout + timeoutOffset);
         } else {
           p2Resolve(undefined);

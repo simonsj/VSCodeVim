@@ -610,28 +610,27 @@ suite('Remapper', () => {
     // act and assert
 
     // check that 'ww' -> 'dw' waits for timeout to finish and timeout isn't run twice
-    const result1: string[] = await new Promise(async (r1Resolve, r1Reject) => {
-      const p1: Promise<string> = new Promise((p1Resolve, p1Reject) => {
+    const result1: string[] = await new Promise<string[]>((r1Resolve) => {
+      const p1 = new Promise<string>((p1Resolve) => {
         setTimeout(() => {
           // get line after half timeout finishes
           const currentLine = modeHandler.vimState.document.lineAt(0).text;
           p1Resolve(currentLine);
         }, timeout / 2);
       });
-      const p2: Promise<string> = new Promise((p2Resolve, p2Reject) => {
+      const p2 = new Promise<string>((p2Resolve) => {
         setTimeout(() => {
           // get line after timeout + offset finishes
           const currentLine = modeHandler.vimState.document.lineAt(0).text;
           p2Resolve(currentLine);
         }, timeout + timeoutOffset);
       });
-      const p3: Promise<string> = new Promise(async (p3Resolve, p3Reject) => {
+      const p3 = (async () => {
         await modeHandler.handleMultipleKeyEvents(['w', 'w']);
-        p3Resolve('modeHandler.handleMultipleKeyEvents finished');
-      });
-      await Promise.all([p1, p2, p3]).then((results) => {
-        r1Resolve(results);
-      });
+        return 'modeHandler.handleMultipleKeyEvents finished';
+      })();
+
+      void Promise.all([p1, p2, p3]).then(r1Resolve);
     });
 
     // Before the timeout finishes it shouldn't have changed anything yet,
@@ -644,39 +643,30 @@ suite('Remapper', () => {
     assert.strictEqual(result1[1], 'bar biz');
 
     // check that 'www' -> 'dw' and then 'w' waits for timeout to finish
-    const result2: Array<{ line: string; position: number }> = await new Promise(
-      async (r2Resolve, r2Reject) => {
-        const p1: Promise<{ line: string; position: number }> = new Promise(
-          (p1Resolve, p1Reject) => {
-            setTimeout(() => {
-              // get line and cursor character after half timeout finishes
-              const currentLine = modeHandler.vimState.document.lineAt(0).text;
-              const cursorCharacter = modeHandler.vimState.cursorStopPosition.character;
-              p1Resolve({ line: currentLine, position: cursorCharacter });
-            }, timeout / 2);
-          },
-        );
-        const p2: Promise<{ line: string; position: number }> = new Promise(
-          (p2Resolve, p2Reject) => {
-            setTimeout(() => {
-              // get line and cursor character after timeout + offset finishes
-              const currentLine = modeHandler.vimState.document.lineAt(0).text;
-              const cursorCharacter = modeHandler.vimState.cursorStopPosition.character;
-              p2Resolve({ line: currentLine, position: cursorCharacter });
-            }, timeout + timeoutOffset);
-          },
-        );
-        const p3: Promise<{ line: string; position: number }> = new Promise(
-          async (p3Resolve, p3Reject) => {
-            await modeHandler.handleMultipleKeyEvents(['w', 'w', 'w']);
-            p3Resolve({ line: 'modeHandler.handleMultipleKeyEvents finished', position: -1 });
-          },
-        );
-        await Promise.all([p1, p2, p3]).then((results) => {
-          r2Resolve(results);
-        });
-      },
-    );
+    const result2: Array<{ line: string; position: number }> = await new Promise((r2Resolve) => {
+      const p1 = new Promise<{ line: string; position: number }>((p1Resolve) => {
+        setTimeout(() => {
+          // get line and cursor character after half timeout finishes
+          const currentLine = modeHandler.vimState.document.lineAt(0).text;
+          const cursorCharacter = modeHandler.vimState.cursorStopPosition.character;
+          p1Resolve({ line: currentLine, position: cursorCharacter });
+        }, timeout / 2);
+      });
+      const p2 = new Promise<{ line: string; position: number }>((p2Resolve) => {
+        setTimeout(() => {
+          // get line and cursor character after timeout + offset finishes
+          const currentLine = modeHandler.vimState.document.lineAt(0).text;
+          const cursorCharacter = modeHandler.vimState.cursorStopPosition.character;
+          p2Resolve({ line: currentLine, position: cursorCharacter });
+        }, timeout + timeoutOffset);
+      });
+      const p3 = (async () => {
+        await modeHandler.handleMultipleKeyEvents(['w', 'w', 'w']);
+        return { line: 'modeHandler.handleMultipleKeyEvents finished', position: -1 };
+      })();
+
+      void Promise.all([p1, p2, p3]).then(r2Resolve);
+    });
 
     // Before the timeout finishes it shouldn't have changed anything yet,
     // because it is still waiting for a key or timeout to finish.
@@ -712,10 +702,11 @@ suite('Remapper', () => {
     );
 
     // check that 'wwww' -> 'dd' doesn't wait for timeout
-    const result3 = await new Promise(async (r3Resolve, r3Reject) => {
+    const result3 = await new Promise<string>((r3Resolve) => {
       const start = Number(new Date());
 
-      await modeHandler.handleMultipleKeyEvents(['w', 'w', 'w', 'w']).then(() => {
+      void (async () => {
+        await modeHandler.handleMultipleKeyEvents(['w', 'w', 'w', 'w']);
         const now = Number(new Date());
         const elapsed = now - start;
 
@@ -737,7 +728,7 @@ suite('Remapper', () => {
         // timeout we can be sure the setTimeout was never ran.
         assert.strictEqual(elapsed < timeout / 2, true);
         r3Resolve("wwww -> dd doesn't wait for timeout to finish");
-      });
+      })();
     });
 
     assert.strictEqual(result3, "wwww -> dd doesn't wait for timeout to finish");
@@ -781,7 +772,7 @@ suite('Remapper', () => {
     // wait for 500 miliseconds (half of timeout) to simulate the time the user takes
     // between presses. Not using a fixed value here in case the default configuration
     // gets changed to use a lower value for timeout.
-    const waited: boolean = await new Promise((wResolve, wReject) => {
+    const waited: boolean = await new Promise((wResolve, _wReject) => {
       setTimeout(() => {
         wResolve(true);
       }, timeout / 2);
