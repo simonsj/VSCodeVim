@@ -83,10 +83,8 @@ module.exports = {
     '@typescript-eslint/prefer-for-of': 'error',
     '@typescript-eslint/prefer-function-type': 'error',
     '@typescript-eslint/prefer-namespace-keyword': 'error',
-    // ignore the rule to conform to current code
     '@typescript-eslint/require-await': 'off',
     '@typescript-eslint/restrict-plus-operands': 'error',
-    // ignore the rule to conform to current code
     '@typescript-eslint/restrict-template-expressions': 'off',
     '@typescript-eslint/triple-slash-reference': [
       'error',
