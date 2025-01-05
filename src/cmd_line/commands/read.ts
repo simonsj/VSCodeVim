@@ -59,6 +59,7 @@ export class ReadCommand extends ExCommand {
       if (this.arguments.cmd.length > 0) {
         if (SUPPORT_READ_COMMAND) {
           const cmd = this.arguments.cmd;
+          // eslint-disable-next-line @typescript-eslint/no-misused-promises
           return new Promise<string>(async (resolve, reject) => {
             const { exec } = await import('child_process');
             exec(cmd, (err, stdout, stderr) => {

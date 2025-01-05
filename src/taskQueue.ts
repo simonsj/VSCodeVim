@@ -32,6 +32,7 @@ class TaskQueue {
    */
   public enqueueTask(taskName: TaskName, task: () => Promise<void>): void {
     Logger.trace(`TaskQueue: enqueue ${getTaskName(taskName)}, length: ${this.taskQueue.length}`);
+    // eslint-disable-next-line @typescript-eslint/no-misused-promises
     this.taskQueue.push(task);
   }
 }
