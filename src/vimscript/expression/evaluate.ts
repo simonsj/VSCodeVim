@@ -31,7 +31,14 @@ import {
   VariableExpression,
 } from './types';
 import { Pattern, SearchDirection } from '../pattern';
-import { escapeRegExp, isInteger } from 'lodash';
+
+function escapeRegExp(input: string): string {
+  return input.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+function isInteger(value: number): boolean {
+  return Number.isInteger(value);
+}
 
 // ID of next lambda; incremented each time one is created
 let lambdaNumber = 1;
