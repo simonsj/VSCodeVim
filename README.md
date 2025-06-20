@@ -1,4 +1,4 @@
-<h2 align="center"><img src="https://raw.githubusercontent.com/VSCodeVim/Vim/master/images/icon.png" height="128"><br>VSCodeVim</h2>
+<h2 align="center"><img src="https://raw.githubusercontent.com/simonsj/VSCodeVim/main/images/icon.png" height="128"><br>VSCodeVim (simonsj fork)</h2>
 <p align="center"><strong>Vim emulation for Visual Studio Code</strong></p>
 
 <!-- TODO: use pgns or something; otherwise vsce won't package it
